@@ -5,7 +5,7 @@
 
 (define-foreign-library libyaml
   (:darwin "libyaml.dylib")
-  (:unix  "libyaml.so")
+  (:unix  (:or "libyaml.so" "libyaml-0.so.2" "libyaml-0.so.2.0.4"))
   (:win32 "libyaml.dll")
   (t (:default "libyaml")))
 
