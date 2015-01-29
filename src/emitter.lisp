@@ -2,7 +2,8 @@
 (defpackage libyaml.emitter
   (:use :cl :cffi)
   (:export :write-handler-t
-           :state-t))
+           :state-t)
+  (:documentation "The libyaml emitter. This package is incomplete."))
 (in-package :libyaml.emitter)
 
 (defctype write-handler-t :pointer)

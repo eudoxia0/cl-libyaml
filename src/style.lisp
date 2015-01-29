@@ -5,7 +5,8 @@
                 :size-t)
   (:export :scalar-style-t
            :sequence-style-t
-           :mapping-style-t))
+           :mapping-style-t)
+  (:documentation "Style information for various libyaml structures."))
 (in-package :libyaml.style)
 
 (defcenum scalar-style-t
