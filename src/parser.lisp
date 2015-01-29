@@ -7,7 +7,9 @@
                 :mark-t
                 :error-type-t
                 :encoding-t
-                :tag-directive-t)
+                :tag-directive-t
+                :mark-line
+                :mark-column)
   (:import-from :libyaml.document
                 :document-t)
   (:import-from :libyaml.event
@@ -81,6 +83,7 @@
            :aliases
            :document
            ;; Functions
+           :allocate-parser
            :initialize
            :parser-delete
            :set-input-string
@@ -89,7 +92,12 @@
            :set-encoding
            :scan
            :parse
-           :parser-load))
+           :parser-load
+           :parser-error
+           :error-message
+           :error-line
+           :error-column)
+  (:documentation "The libyaml parser."))
 (in-package :libyaml.parser)
 
 (defctype read-handler-t :pointer)
@@ -245,6 +253,9 @@
 
 ;; Parser functions
 
+(defun allocate-parser ()
+  (foreign-alloc '(:struct parser-t)))
+
 (defcfun ("yaml_parser_initialize" initialize) :int
   "Initialize a parser."
   (parser (:pointer (:struct parser-t))))
@@ -257,7 +268,7 @@
     :void
   "Set a string input."
   (parser (:pointer (:struct parser-t)))
-  (input :string)
+  (input :pointer)
   (size size-t))
 
 (defcfun ("yaml_parser_set_input_file" set-input-file)
@@ -280,19 +291,37 @@
   (encoding encoding-t))
 
 (defcfun ("yaml_parser_scan" scan)
-    :int
+    :boolean
   "Scan the input stream and produce the next token."
   (parser (:pointer (:struct parser-t)))
   (token (:pointer (:struct token-t))))
 
-(defcfun ("yaml_parser_scan" parse)
-    :int
+(defcfun ("yaml_parser_parse" parse)
+    :boolean
   "Parse the input stream and produce the next parsing event."
   (parser (:pointer (:struct parser-t)))
   (event (:pointer (:struct event-t))))
 
 (defcfun ("yaml_parser_load" parser-load)
-    :int
+    :boolean
   "Parse the input stream and produce the next YAML document."
   (parser (:pointer (:struct parser-t)))
   (document (:pointer (:struct document-t))))
+
+(defun parser-error (parser)
+  "Return the current error type."
+  (foreign-slot-value parser '(:struct parser-t) 'error))
+
+(defun error-message (parser)
+  "Return the current error message."
+  (foreign-slot-value parser '(:struct parser-t) 'problem))
+
+(defun error-line (parser)
+  "Return the line where the current error happened."
+  (mark-line
+   (foreign-slot-pointer parser '(:struct parser-t) 'mark)))
+
+(defun error-column (parser)
+  "Return the column where the error happened."
+  (mark-column
+   (foreign-slot-pointer parser '(:struct parser-t) 'mark)))
