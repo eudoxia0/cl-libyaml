@@ -9,17 +9,17 @@
   :components ((:module "src"
                 :serial t
                 :components
-                ((:file "library")
+                ((:file "package")
+                 (:file "library")
                  (:file "version")
                  (:file "util")
                  (:file "basic-types")
                  (:file "style")
+                 (:file "node")
                  (:file "token")
                  (:file "event")
-                 (:file "node")
                  (:file "document")
                  (:file "parser")
-                 (:file "emitter")
                  (:file "macros"))))
   :description "A binding to the libyaml library."
   :long-description
