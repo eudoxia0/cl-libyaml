@@ -15,7 +15,10 @@
            :prefix
            :index
            :line
-           :column))
+           :column
+           :mark-line
+           :mark-column)
+  (:documentation "Basic data types used throughout libyaml."))
 (in-package :libyaml.basic)
 
 (defcstruct version-directive-t
@@ -58,3 +61,11 @@
   (index size-t)
   (line size-t)
   (column size-t))
+
+(defun mark-line (mark)
+  "The line number of a mark."
+  (foreign-slot-value mark '(:struct mark-t) 'line))
+
+(defun mark-column (mark)
+  "The column number of a mark."
+  (foreign-slot-value mark '(:struct mark-t) 'column))
