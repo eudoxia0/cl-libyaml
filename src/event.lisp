@@ -10,22 +10,34 @@
                 :mark-t)
   (:import-from :libyaml.style
                 :scalar-style-t)
-  (:export :type-t
+  (:export ;; Datatypes
+           :type-t
            :stream-start-t
            :data-t
            :event-t
+           ;; Accessors
            :encoding
            :stream-start
            :type
            :data
            :start-mark
            :end-mark
-           :event-delete))
+           ;; Functions
+           :allocate-event
+           :event-delete
+           :event-type
+           :event-alias-data
+           :event-scalar-data
+           :event-sequence-start-data
+           :event-mapping-start-data)
+  (:documentation "Events are produced by parsers, and are an alternative to
+ token-based parsing."))
 (in-package :libyaml.event)
 
 (defcenum type-t
   "Event types."
   :no-event
+
   :stream-start-event
   :stream-end-event
 
@@ -34,6 +46,9 @@
 
   :alias-event
   :scalar-event
+
+  :sequence-start-event
+  :sequence-end-event
 
   :mapping-start-event
   :mapping-end-event)
@@ -106,6 +121,65 @@
 
 ;; Event functions
 
+(defun allocate-event ()
+  "Return a pointer to an event."
+  (foreign-alloc '(:struct event-t)))
+
 (defcfun ("yaml_event_delete" event-delete) :void
   "Free any memory allocated for an event object."
   (token (:pointer (:struct event-t))))
+
+(defun event-type (event)
+  "The event's type."
+  (foreign-slot-value event '(:struct event-t) 'type))
+
+;;; Extracting event data
+
+;; Some utils
+
+(defun union-pointer (event)
+  (foreign-slot-pointer event '(:struct event-t) 'data))
+
+(defun scalar-pointer (event)
+  (foreign-slot-pointer (union-pointer event) '(:union data-t) 'scalar))
+
+(defun sequence-start-pointer (event)
+  (foreign-slot-pointer (union-pointer event) '(:union data-t) 'sequence-start))
+
+(defun mapping-start-pointer (event)
+  (foreign-slot-pointer (union-pointer event) '(:union data-t) 'mapping-start))
+
+;; The actual functions
+
+(defun event-alias-data (event)
+  (let* ((data-union (union-pointer event))
+         (alias (foreign-slot-pointer data-union '(:union data-t) 'alias))
+         (anchor (foreign-slot-value alias '(:struct alias-t) 'anchor)))
+    (list :anchor anchor)))
+
+(defun event-scalar-data (event)
+  (let* ((scalar (scalar-pointer event))
+         (anchor (foreign-slot-value scalar '(:struct scalar-t) 'anchor))
+         (tag (foreign-slot-value scalar '(:struct scalar-t) 'tag))
+         (value (foreign-slot-value scalar '(:struct scalar-t) 'value)))
+    (list :anchor anchor
+          :tag tag
+          :value value)))
+
+(defun event-sequence-start-data (event)
+  (let* ((sequence-start (sequence-start-pointer event))
+         (anchor (foreign-slot-value sequence-start '(:struct sequence-start-t)
+                                     'anchor))
+         (tag (foreign-slot-value sequence-start '(:struct sequence-start-t)
+                                  'tag)))
+    (list :anchor anchor
+          :tag tag)))
+
+(defun event-mapping-start-data (event)
+  (let* ((mapping-start (mapping-start-pointer event))
+         (anchor (foreign-slot-value mapping-start '(:struct mapping-start-t)
+                                     'anchor))
+         (tag (foreign-slot-value mapping-start '(:struct mapping-start-t)
+                                  'tag)))
+    (list :anchor anchor
+          :tag tag)))
