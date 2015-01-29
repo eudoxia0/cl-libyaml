@@ -7,10 +7,11 @@
                 :mark-t)
   (:import-from :libyaml.node
                 :node-t)
-  (:export :nodes-t
+  (:export ;; Datatypes
+           :nodes-t
            :tag-directives-t
            :document-t
-           :document-delete
+           ;; Accessors
            :start
            :end
            :top
@@ -21,7 +22,10 @@
            :end-implicit
            :start-mark
            :end-mark
-           :token))
+           :token
+           ;; Functions
+           :allocate-document
+           :document-delete))
 (in-package :libyaml.document)
 
 (defcstruct nodes-t
@@ -48,6 +52,11 @@
 
   (start-mark (:struct mark-t))
   (end-mark (:struct mark-t)))
+
+;;; Functions
+
+(defun allocate-document ()
+  (foreign-alloc '(:struct document-t)))
 
 (defcfun ("yaml_document_delete" document-delete) :void
   "Delete a YAML document and all its nodes."

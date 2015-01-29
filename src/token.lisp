@@ -1,10 +1,15 @@
 (in-package :cl-user)
 (defpackage libyaml.token
   (:use :cl :cffi)
+  (:import-from :libyaml.util
+                :size-t)
   (:import-from :libyaml.basic
                 :encoding-t
                 :mark-t)
-  (:export :type-t
+  (:import-from :libyaml.style
+                :scalar-style-t)
+  (:export ;; Datatypes
+           :type-t
            :stream-start-t
            :alias-t
            :anchor-t
@@ -14,7 +19,11 @@
            :tag-directive-t
            :data-t
            :token-t
-           :token-delete))
+           ;; Functions
+           :allocate-token
+           :token-delete
+           :token-type)
+  (:documentation "Tokens are produced by parsing."))
 (in-package :libyaml.token)
 
 (defcenum type-t
@@ -67,7 +76,9 @@
 
 (defcstruct scalar-t
   "The scalar value (for @c YAML_SCALAR_TOKEN)."
-  (value :string))
+  (value :string)
+  (length size-t)
+  (style scalar-style-t))
 
 (defcstruct version-directive-t
   "The version directive (for @c YAML_VERSION_DIRECTIVE_TOKEN)."
@@ -100,6 +111,14 @@
 
 ;; Token functions
 
+(defun allocate-token ()
+  "Allocate a token."
+  (foreign-alloc '(:struct token-t)))
+
 (defcfun ("yaml_token_delete" token-delete) :void
   "Free any memory allocated for a token object."
   (token (:pointer (:struct token-t))))
+
+(defun token-type (token)
+  "Return the type of the token."
+  (foreign-slot-value token '(:struct token-t) 'type))
