@@ -2,22 +2,33 @@
 (defpackage libyaml.macros
   (:use :cl)
   (:import-from :cffi
-                :with-foreign-object
+                :foreign-alloc
                 :with-foreign-string)
-  (:export :with-parser)
+  (:export :with-parser
+           :with-event)
   (:documentation "Some macros to simplify managing foreign objects."))
 (in-package :libyaml.macros)
 
 (defmacro with-parser ((parser input-string) &rest body)
-  "Create a parser using input-string as the YAML input, execute body, then
-delete the parser."
-  `(with-foreign-object (,parser 'libyaml.parser:parser-t)
-     (with-foreign-string (string ,input-string)
+  "Create a parser using input-string as the YAML input, execute body, then free
+the parser."
+  `(let ((,parser (libyaml.parser:allocate-parser))
+         (string ,input-string))
+     (with-foreign-string (c-string string)
        (libyaml.parser:initialize ,parser)
        (libyaml.parser:set-input-string ,parser
-                                        string
+                                        c-string
                                         (length string))
        (unwind-protect
             (progn
               ,@body)
-         (libyaml.parser:parser-delete)))))
+         (libyaml.parser:parser-delete ,parser)))))
+
+(defmacro with-event ((event) &rest body)
+  "Allocate event, execute body, then free it."
+  `(let ((,event (libyaml.event:allocate-event)))
+     ,@body
+     (unwind-protect
+          (progn
+            ,@body)
+       (libyaml.event:event-delete ,event))))
