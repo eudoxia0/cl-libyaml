@@ -36,7 +36,8 @@
            :tag
            :data
            :start-mark
-           :end-mark))
+           :end-mark)
+  (:documentation "LibYAML nodes."))
 (in-package :libyaml.node)
 
 (defcenum type-t
