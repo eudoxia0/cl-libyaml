@@ -2,7 +2,9 @@
   :author "Fernando Borretti <eudoxiahp@gmail.com>"
   :maintainer "Fernando Borretti <eudoxiahp@gmail.com>"
   :license "MIT"
-  :homepage ""
+  :homepage "https://github.com/eudoxia0/cl-libyaml"
+  :bug-tracker "https://github.com/eudoxia0/cl-libyaml/issues"
+  :source-control (:git "git@github.com:eudoxia0/cl-libyaml.git")
   :version "0.1"
   :depends-on (:cffi
                :cffi-libffi)
