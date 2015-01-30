@@ -1,5 +1,7 @@
 # cl-libyaml
 
+[![Build Status](https://travis-ci.org/eudoxia0/cl-libyaml.svg?branch=master)](https://travis-ci.org/eudoxia0/cl-libyaml)
+
 A binding to the [libyaml][lyaml] library.
 
 # Overview
