@@ -6,8 +6,7 @@
   :bug-tracker "https://github.com/eudoxia0/cl-libyaml/issues"
   :source-control (:git "git@github.com:eudoxia0/cl-libyaml.git")
   :version "0.1"
-  :depends-on (:cffi
-               :cffi-libffi)
+  :depends-on (:cffi)
   :components ((:module "src"
                 :serial t
                 :components
