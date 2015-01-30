@@ -9,8 +9,7 @@
   :components ((:module "src"
                 :serial t
                 :components
-                ((:file "package")
-                 (:file "library")
+                ((:file "library")
                  (:file "version")
                  (:file "util")
                  (:file "basic-types")
