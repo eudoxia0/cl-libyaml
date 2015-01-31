@@ -5,7 +5,6 @@ env:
     - LISP=sbcl
     - LISP=ccl
     - LISP=clisp
-    - LISP=abcl
 
 install:
   # Install cl-travis
