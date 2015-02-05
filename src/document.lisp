@@ -25,7 +25,8 @@
            :token
            ;; Functions
            :allocate-document
-           :document-delete))
+           :document-delete)
+  (:documentation "Bindings to the document data structure."))
 (in-package :libyaml.document)
 
 (defcstruct nodes-t

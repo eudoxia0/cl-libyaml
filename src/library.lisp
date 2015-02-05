@@ -1,6 +1,7 @@
 (in-package :cl-user)
 (defpackage libyaml.lib
-  (:use :cl :cffi))
+  (:use :cl :cffi)
+  (:documentation "Load the libyaml library."))
 (in-package :libyaml.lib)
 
 (define-foreign-library libyaml
