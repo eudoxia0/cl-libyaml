@@ -27,7 +27,6 @@ the parser."
 (defmacro with-event ((event) &rest body)
   "Allocate event, execute body, then free it."
   `(let ((,event (libyaml.event:allocate-event)))
-     ,@body
      (unwind-protect
           (progn
             ,@body)
