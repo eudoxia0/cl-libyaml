@@ -19,7 +19,8 @@ script:
                  (lambda (c h)
                    (declare (ignore c h))
                    (uiop:quit -1)))'
-       -e '(coveralls:with-coveralls (ql:quickload :cl-libyaml-test))'
+       -e '(coveralls:with-coveralls ()
+             (ql:quickload :cl-libyaml-test))'
 
 notifications:
   email:
