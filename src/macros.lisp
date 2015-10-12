@@ -14,11 +14,11 @@
 the parser."
   `(let ((,parser (libyaml.parser:allocate-parser))
          (string ,input-string))
-     (with-foreign-string (c-string string)
+     (with-foreign-string ((c-string octet-size) string)
        (libyaml.parser:initialize ,parser)
        (libyaml.parser:set-input-string ,parser
                                         c-string
-                                        (length string))
+                                        (1- octet-size))
        (unwind-protect
             (progn
               ,@body)
