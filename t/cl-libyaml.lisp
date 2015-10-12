@@ -1,6 +1,8 @@
 (in-package :cl-user)
 (defpackage cl-libyaml-test
-  (:use :cl :fiveam))
+  (:use :cl :fiveam)
+  (:export :run-tests)
+  (:documentation "cl-libyaml tests."))
 (in-package :cl-libyaml-test)
 
 (defparameter +yaml-string+
@@ -80,4 +82,5 @@
       (finishes
        (libyaml.event:event-delete event)))))
 
-(run! 'tests)
+(defun run-tests ()
+  (run! 'tests))
