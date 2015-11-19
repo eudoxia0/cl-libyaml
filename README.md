@@ -1,6 +1,7 @@
 # cl-libyaml
 
 [![Build Status](https://travis-ci.org/eudoxia0/cl-libyaml.svg?branch=master)](https://travis-ci.org/eudoxia0/cl-libyaml)
+[![Quicklisp](http://quickdocs.org/badge/cl-libyaml.svg)](http://quickdocs.org/cl-libyaml/)
 
 A binding to the [libyaml][lyaml] library.
 
@@ -50,15 +51,15 @@ prefix removed, as in `:parse-flow-node-state`.
 ```lisp
 YAML-EXAMPLE> (parse "[1,2,3]")
 
-:STREAM-START-EVENT 
-:DOCUMENT-START-EVENT 
-:SEQUENCE-START-EVENT 
-:SCALAR-EVENT 
-:SCALAR-EVENT 
-:SCALAR-EVENT 
-:SEQUENCE-END-EVENT 
-:DOCUMENT-END-EVENT 
-:STREAM-END-EVENT 
+:STREAM-START-EVENT
+:DOCUMENT-START-EVENT
+:SEQUENCE-START-EVENT
+:SCALAR-EVENT
+:SCALAR-EVENT
+:SCALAR-EVENT
+:SEQUENCE-END-EVENT
+:DOCUMENT-END-EVENT
+:STREAM-END-EVENT
 NIL
 ```
 
