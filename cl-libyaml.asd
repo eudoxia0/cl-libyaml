@@ -20,6 +20,7 @@
                  (:file "event")
                  (:file "document")
                  (:file "parser")
+                 (:file "emitter")
                  (:file "macros"))))
   :description "A binding to the libyaml library."
   :long-description
