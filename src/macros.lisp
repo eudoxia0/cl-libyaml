@@ -21,7 +21,8 @@ the parser."
        (unwind-protect
             (progn
               ,@body)
-         (libyaml.parser:parser-delete ,parser)))))
+         (libyaml.parser:parser-delete ,parser)
+         (cffi:foreign-free ,parser)))))
 
 (defmacro with-event ((event) &rest body)
   "Allocate event, execute body, then free it."
@@ -29,4 +30,5 @@ the parser."
      (unwind-protect
           (progn
             ,@body)
-       (libyaml.event:event-delete ,event))))
+       (libyaml.event:event-delete ,event)
+       (cffi:foreign-free ,event))))
