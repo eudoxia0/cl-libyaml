@@ -21,6 +21,7 @@
                  (:file "document")
                  (:file "parser")
                  (:file "emitter")
+		 (:file "write-handler")
                  (:file "macros"))))
   :description "A binding to the libyaml library."
   :long-description
