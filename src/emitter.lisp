@@ -271,12 +271,12 @@
   (version-directive (:pointer (:struct version-directive-t)))
   (tag-directive-start (:pointer (:struct tag-directive-t)))
   (tag-directive-end (:pointer (:struct tag-directive-t)))
-  (implicit :int))
+  (implicit :boolean))
 
 (defcfun ("yaml_document_end_event_initialize" document-end-event-initialize) :int
   "Create the DOCUMENT-END event."
   (event (:pointer (:struct event-t)))
-  (implicit :int))
+  (implicit :boolean))
 
 (defcfun ("yaml_alias_event_initialize" alias-event-initialize) :int
   "Create an ALIAS event."
@@ -289,15 +289,15 @@
   (tag :string)
   (value :string)
   (length :int)
-  (plain-implicit :int)
-  (quoted-implicit :int)
+  (plain-implicit :boolean)
+  (quoted-implicit :boolean)
   (style scalar-style-t))
 
 (defcfun ("yaml_sequence_start_event_initialize" sequence-start-event-initialize) :int
   (event (:pointer (:struct event-t)))
   (anchor :string)
   (tag :string)
-  (implicit :int)
+  (implicit :boolean)
   (style sequence-style-t))
 
 (defcfun ("yaml_sequence_end_event_initialize" sequence-end-event-initialize) :int
@@ -307,7 +307,7 @@
   (event (:pointer (:struct event-t)))
   (anchor :string)
   (tag :string)
-  (implicit :int)
+  (implicit :boolean)
   (style mapping-style-t))
 
 (defcfun ("yaml_mapping_end_event_initialize" mapping-end-event-initialize) :int
