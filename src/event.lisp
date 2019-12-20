@@ -161,10 +161,16 @@
   (let* ((scalar (scalar-pointer event))
          (anchor (foreign-slot-value scalar '(:struct scalar-t) 'anchor))
          (tag (foreign-slot-value scalar '(:struct scalar-t) 'tag))
-         (value (foreign-slot-value scalar '(:struct scalar-t) 'value)))
+         (value (foreign-slot-value scalar '(:struct scalar-t) 'value))
+         (plain-implicit (foreign-slot-value scalar '(:struct scalar-t) 'plain-implicit))
+         (quoted-implicit (foreign-slot-value scalar '(:struct scalar-t) 'quoted-implicit))
+         (style (foreign-slot-value scalar '(:struct scalar-t) 'style)))
     (list :anchor anchor
           :tag tag
-          :value value)))
+          :value value
+          :plain-implicit plain-implicit
+          :quoted-implicit quoted-implicit
+          :style style)))
 
 (defun event-sequence-start-data (event)
   (let* ((sequence-start (sequence-start-pointer event))
